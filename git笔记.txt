@@ -1,0 +1,119 @@
+感谢廖大侠的文章。
+
+git命令：
+
+1.世界起源
+git init
+git add  readme.txt
+git commit -m "提交点描述"
+
+状态
+git status        	             //看文件在工作区，缓存区还是已经提交。
+git diff <head>             //看修改内容
+
+回退
+git reset --hard head^
+git reset --hard 1094a
+git log <--pretty=oneline>
+git reflog
+
+目录 是 工作区。
+.git 是 版本库。包含 暂存区和分支。
+
+撤销
+git checkout -- readme.txt   //工作区 回到最近一次git commit或git add时的状态。
+git reset head readme.txt     //撤销 暂存区的修改
+
+删除
+git rm test.txt
+git commit -m "remove test.txt"
+
+
+
+2.远程
+创建SSH Key                   //  C:\Users\Administrator\.ssh
+ssh-keygen -t rsa -C "youremail@example.com"       //id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥
+
+关联远程仓库
+git remote add  origin git@github.com:git名/learngit.git
+git push  -u origin master        //推送到远程库   -u关联
+
+解除远程库
+git remote -v        //查看远程库信息 push fetch
+git remote rm  origin         //解除origin库
+
+克隆远程库
+git clone git@github.com:git名/gitskills.git
+
+
+
+3.分支
+git branch                  //查看分支
+
+创建
+git branch dev           //创建dev分支
+git checkout dev        //切换分支  
+git checkout -b dev 或 git switch -c dev         //创建并切换
+
+合并与删除
+git merge dev            //合并dev到当前分支
+git branch -d dev       //删除分支
+git branch -D dev       //强制删除
+
+合并且提交
+git merge --no-ff -m "merge with no-ff" dev
+分支树
+git log --graph --pretty=oneline --abbrev-commit
+
+
+bug分支 （储藏）：
+git stash            		   //工作现场储藏
+git stash list        		   //查看储藏
+
+git stash apply <stash@{0}>       //恢复
+git stash drop  < >		            //删除
+git stash pop		 	 	    //恢复并删除
+
+将提交合并到分支
+git cherry-pick 提交号
+
+
+
+4.多人协作
+git push origin 本地分支名           //推 推送本地分支到origin
+git checkout -b dev origin/dev     //克隆远程dev到本地
+
+解决冲突
+git branch --set-upstream-to=origin/dev dev          //设置dev和origin/dev的链接
+git pull		//抓下来。后合并，提交，推送。
+
+git rebase                //让分支树变成直线
+
+
+
+5.标签管理
+标签：commit号的别名
+git tag v1.0 <commit号>       		              //打标签
+git tag -a v0.1 -m  "说明"  <commit号>       //带说明
+
+git tag                                         //查看
+git show v0.9                              //查看具体
+
+推送标签
+git push origin v1.0          
+git push origin --tags
+
+删除标签
+git tag -d v0.1
+git push origin :refs/tags/v0.9       //远程删除
+
+git tag|xargs git tag -d|git pull     //更新tag
+
+
+6.配置
+git config --global color.ui true  	      //颜色
+.gitignore文件中   			      //配置忽略的文件
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"              //配置别名
+.git/config                          //配置文件
+主目录/.gitconfig                //全局配置文件
+
